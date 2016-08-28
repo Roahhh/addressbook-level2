@@ -42,10 +42,20 @@ public class StorageFile {
             super(message);
         }
     }
+    
+    /**
+     * Signals that the storage file has been deleted.
+     */
+    public static class FileDeletedException extends StorageOperationException {
+    	public FileDeletedException(String message) {
+    		super(message);
+    	}
+    }
 
     private final JAXBContext jaxbContext;
 
     public final Path path;
+    private static boolean isStorageFileCreated = false;
 
     /**
      * @throws InvalidStorageFilePathException if the default path is invalid
@@ -82,9 +92,14 @@ public class StorageFile {
      * Saves all data to this storage file.
      *
      * @throws StorageOperationException if there were errors converting and/or storing data to file.
+     * @throws FileDeletedException if the created storage file has been deleted while the program is running
      */
-    public void save(AddressBook addressBook) throws StorageOperationException {
+    public void save(AddressBook addressBook) throws StorageOperationException, FileDeletedException {
 
+    	File storageFile = path.toFile();
+    	if (!storageFile.exists() && isStorageFileCreated) {
+    		throw new FileDeletedException("File does not exist, it might have been deleted.");
+    	}
         /* Note: Note the 'try with resource' statement below.
          * More info: https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
          */
@@ -95,7 +110,7 @@ public class StorageFile {
             final Marshaller marshaller = jaxbContext.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.marshal(toSave, fileWriter);
-
+            isStorageFileCreated = true;
         } catch (IOException ioe) {
             throw new StorageOperationException("Error writing to file: " + path);
         } catch (JAXBException jaxbe) {
@@ -128,7 +143,7 @@ public class StorageFile {
         // create empty file if not found
         } catch (FileNotFoundException fnfe) {
             final AddressBook empty = new AddressBook();
-            save(empty);
+			save(empty);
             return empty;
 
         // other errors

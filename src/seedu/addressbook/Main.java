@@ -76,7 +76,9 @@ public class Main {
         System.exit(0);
     }
 
-    /** Reads the user command and executes it, until the user issues the exit command.  */
+    /** Reads the user command and executes it, until the user issues the exit command.  
+     *  Before execution of command, check if the addressbook file still exist.
+     */
     private void runCommandLoopUntilExitCommand() {
         Command command;
         do {
