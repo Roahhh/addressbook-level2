@@ -16,4 +16,14 @@ public class UtilsTest {
 	public void testOneNull() {
 		assertTrue(Utils.isAnyNull("There", "is", "one", null, 1, 5, true));
 	}
+	
+	@Test
+	public void testNonUnique() {
+		ArrayList<Integer> list = new ArrayList<>();
+		for (int i = 0; i < 100; i++) {
+			list.add(1);
+		}
+		
+		assertFalse(Utils.elementsAreUnique(list));
+	}
 }
