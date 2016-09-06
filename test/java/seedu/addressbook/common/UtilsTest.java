@@ -26,4 +26,14 @@ public class UtilsTest {
 		
 		assertFalse(Utils.elementsAreUnique(list));
 	}
+	
+	@Test
+	public void testAllUnique() {
+		ArrayList<Integer> list = new ArrayList<>();
+		for (int i = 0; i < 100; i++) {
+			list.add(i);
+		}
+		
+		assertTrue(Utils.elementsAreUnique(list));
+	}
 }
