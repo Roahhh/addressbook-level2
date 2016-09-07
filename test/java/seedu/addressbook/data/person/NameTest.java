@@ -15,4 +15,11 @@ public class NameTest {
 		
 		assertTrue(a.isSimilar(b));
 	}
+	
+	public void testDifferentCaptalizedName() throws IllegalValueException {
+		Name a = new Name("Test");
+		Name b = new Name("TEST");
+		
+		assertTrue(a.isSimilar(b));
+	}
 }
