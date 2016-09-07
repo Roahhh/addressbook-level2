@@ -39,4 +39,12 @@ public class NameTest {
 		
 		assertTrue(a.isSimilar(b));
 	}
+	
+	@Test
+	public void testNameInDifferentOrder() throws IllegalValueException {
+		Name a = new Name("Same Name");
+		Name b = new Name("Name Same");
+		
+		assertTrue(a.isSimilar(b));
+	}
 }
