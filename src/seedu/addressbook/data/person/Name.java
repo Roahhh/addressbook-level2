@@ -4,6 +4,7 @@ import seedu.addressbook.data.exception.IllegalValueException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a Person's name in the address book.
@@ -63,9 +64,25 @@ public class Name {
     
     /**
      * Returns true of the other name is very similar to this name.
-     * Two names are considered similar if ...
+     * Two names are considered similar if one contains at least a word from the other name.
      */
      public boolean isSimilar(Name other) {
-    	 return true;
+    	 List<String> wordsInName = this.getWordsInName();
+    	 List<String> otherWordsInName = other.getWordsInName();
+    	 
+    	 wordsInName = wordsInName.stream()
+    			 				  .map(String::toLowerCase)
+    			 				  .collect(Collectors.toList());
+    	 otherWordsInName = otherWordsInName.stream()
+    			             			    .map(String::toLowerCase)
+    			             			    .collect(Collectors.toList());
+    	 
+    	 for (String wordInName : wordsInName) {
+    		if(otherWordsInName.contains(wordInName)) {
+    			return true;
+    		}
+    	 }
+    	 
+    	 return false;
      }
 }

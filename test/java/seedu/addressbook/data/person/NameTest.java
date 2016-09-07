@@ -16,10 +16,19 @@ public class NameTest {
 		assertTrue(a.isSimilar(b));
 	}
 	
+	@Test
 	public void testDifferentCaptalizedName() throws IllegalValueException {
 		Name a = new Name("Test");
 		Name b = new Name("TEST");
 		
 		assertTrue(a.isSimilar(b));
+	}
+	
+	@Test
+	public void testDifferentName() throws IllegalValueException {
+		Name a = new Name("Test");
+		Name b = new Name("Different Name");
+		
+		assertFalse(a.isSimilar(b));
 	}
 }
